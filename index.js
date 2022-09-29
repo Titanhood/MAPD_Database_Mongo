@@ -2,20 +2,20 @@
 var plugin = function (options) {
     var seneca = this;
 
-    seneca.add({ role: 'employee', cmd: 'add' }, function (msg, respond) {
-        this.make('employee').data$(msg.data).save$(respond);
+    seneca.add({ role: 'product', cmd: 'add' }, function (msg, respond) {
+        this.make('product').data$(msg.data).save$(respond);
     });
 
-    seneca.add({ role: 'employee', cmd: 'get' }, function (msg, respond) {
-        this.make('employee').load$(msg.data.user_id, respond);
+    seneca.add({ role: 'product', cmd: 'get' }, function (msg, respond) {
+        this.make('product').load$(msg.data.product_id, respond);
     });
 
-    seneca.add({ role: 'employee', cmd: 'get-all' }, function (msg, respond) {
-        this.make('employee').list$({}, respond);
+    seneca.add({ role: 'product', cmd: 'get-all' }, function (msg, respond) {
+        this.make('product').list$({}, respond);
     });
 
-    seneca.add({ role: 'employee', cmd: 'delete' }, function (msg, respond) {
-        this.make('employee').remove$(msg.data.user_id, respond);
+    seneca.add({ role: 'product', cmd: 'delete' }, function (msg, respond) {
+        this.make('product').remove$(msg.data.product_id, respond);
     });
 
 
@@ -29,58 +29,58 @@ var seneca = require("seneca")();
 seneca.use(plugin);
 seneca.use('seneca-entity');
 
-seneca.add('role:api, cmd:add-user', function (args, done) {
-    console.log("--> cmd:add-user");
-    var employee = {
-        firstname: args.firstname,
-        lastname: args.lastname,
-        position: args.position
+seneca.add('role:api, cmd:add-product', function (args, done) {
+    console.log("--> cmd:add-product");
+    var product = {
+        product: args.firstname,
+        price: args.lastname,
+        category: args.position
     }
-    console.log("--> employee: " + JSON.stringify(employee));
-    seneca.act({ role: 'employee', cmd: 'add', data: employee }, function (err, msg) {
+    console.log("--> product: " + JSON.stringify(product));
+    seneca.act({ role: 'product', cmd: 'add', data: product }, function (err, msg) {
         console.log(msg);
         done(err, msg);
     });
 });
 
-seneca.add('role:api, cmd:get-all-users', function (args, done) {
-    console.log("--> cmd:get-all-users");
-    seneca.act({ role: 'employee', cmd: 'get-all' }, function (err, msg) {
+seneca.add('role:api, cmd:get-all-products', function (args, done) {
+    console.log("--> cmd:get-all-products");
+    seneca.act({ role: 'product', cmd: 'get-all' }, function (err, msg) {
         console.log(msg);
         done(err, msg);
     });
 });
 
-seneca.add('role:api, cmd:get-user', function (args, done) {
-    console.log("--> cmd:get-user, args.user_id: " + args.user_id);
-    seneca.act({ role: 'employee', cmd: 'get', data: { user_id: args.user_id } }, function (err, msg) {
+seneca.add('role:api, cmd:get-product', function (args, done) {
+    console.log("--> cmd:get-product, args.product_id: " + args.product_id);
+    seneca.act({ role: 'product', cmd: 'get', data: { product_id: args.product_id } }, function (err, msg) {
         console.log(msg);
         done(err, msg);
     });
 });
 
 
-seneca.add('role:api, cmd:delete-user', function (args, done) {
-    console.log("--> cmd:delete-user, args.user_id: " + args.user_id);
-    seneca.act({ role: 'employee', cmd: 'delete', data: { user_id: args.user_id } }, function (err, msg) {
+seneca.add('role:api, cmd:delete-product', function (args, done) {
+    console.log("--> cmd:delete-product, args.product_id: " + args.product_id);
+    seneca.act({ role: 'product', cmd: 'delete', data: { product_id: args.product_id } }, function (err, msg) {
         console.log(msg);
         done(err, msg);
     });
 });
 
-seneca.add('role:api, cmd:delete-all-users', function (args, done) {
-    done(null, { cmd: "delete-all-users" });
+seneca.add('role:api, cmd:delete-all-products', function (args, done) {
+    done(null, { cmd: "delete-all-products" });
 });
 
 seneca.act('role:web', {
     use: {
-        prefix: '/abservice',
+        prefix: '/product',
         pin: { role: 'api', cmd: '*' },
         map: {
-            'add-user': { GET: true },
-            'get-all-users': { GET: true },
-            'get-user': { GET: true, },
-            'delete-user': { GET: true, }
+            'add-product': { GET: true },
+            'get-all-products': { GET: true },
+            'get-product': { GET: true, },
+            'delete-product': { GET: true, }
         }
     }
 })
@@ -93,9 +93,9 @@ app.use(seneca.export('web'));
 
 
 app.listen(3000)
-console.log("Server listening on localhost:3000 ...");
+console.log("Server listening on localhost:3009 ...");
 console.log("----- Requests -------------------------");
-console.log("http://localhost:3000/abservice/add-user?firstname=Ajay&lastname=Shrivastav&position=Developer");
-console.log("http://localhost:3000/abservice/get-all-users");
-console.log("http://localhost:3000/abservice/get-user?user_id=1245");
-console.log("http://localhost:3000/abservice/delete-user?user_id=1245");
+console.log("http://localhost:3009/product/add-product?product=Ajay&price=Shrivastav&category=Developer");
+console.log("http://localhost:3009/product/get-all-products");
+console.log("http://localhost:3009/product/get-product?product_id=1245");
+console.log("http://localhost:3009/product/delete-product?product_id=1245");
