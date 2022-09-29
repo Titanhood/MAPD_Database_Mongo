@@ -3,7 +3,7 @@ var fs = require('fs');
 
 var port = 3009;
 var host = '127.0.0.1';
-var filename = 'get-request.js';
+var filename = 'product-management.js';
 
 var requestCounter = 0;
 

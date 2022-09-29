@@ -87,11 +87,7 @@ seneca.add('role:api, cmd:delete-merch', function (args, done) {
 });
 
 seneca.add('role:api, cmd:delete-all-merch', function (args, done) {
-    seneca.act({ role: 'product', cmd: 'delete-all'}, function (err, msg) 
-    {
-        console.log(msg);
-        done(err, { cmd: "delete-all-merch" });
-    });
+    delete product[0];
 })
 
 seneca.act('role:web', {
