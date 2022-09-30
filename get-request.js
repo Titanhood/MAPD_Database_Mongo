@@ -95,7 +95,7 @@ seneca.act('role:web', {
         prefix: '/products',
         pin: { role: 'api', cmd: '*' },
         map: {
-            'add-merch': { GET: true },
+            'add-merch': { GET: true, POST: true },
             'add-merch1': { POST: true, GET: true },
             'get-all-merch': { GET: true },
             'get-merch': { GET: true, },
