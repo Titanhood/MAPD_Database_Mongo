@@ -46,7 +46,7 @@ seneca.add('role:api, cmd:add-merch', function (args, done) {
 });
 
 seneca.add('role:api, cmd:add-merch1', function (args, done) {
-    console.log("--> products GET: recieved request");
+    console.log("--> products POST: recieved request");
     var product = {
         product: "Gaming Laptop",
         price: "1001.99",
